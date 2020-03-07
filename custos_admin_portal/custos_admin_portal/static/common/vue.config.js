@@ -6,7 +6,10 @@ module.exports = {
   pages: {
     app: "./js/main.js",
     cms: "./js/cms.js",
-    'request-new-tenant': "./js/custos_admin_portal_auth/entry-request-new-tenant"
+    'request-new-tenant': "./js/apps/workspace/entry-request-new-tenant",
+    'list-requests': "./js/apps/workspace/entry-list-new-tenant-requests",
+    'view-request': "./js/apps/workspace/entry-view-tenant-request",
+    'admin-view-request': "./js/apps/custos_admin_portal_admin/entry-view-tenant-request"
   },
   css: {
     loaderOptions: {
@@ -39,7 +42,8 @@ module.exports = {
             name: 'chunk-vendors',
             test: /[\\/]node_modules[\\/]/,
             priority: -10,
-            chunks: 'initial'
+            chunks: 'initial',
+            reuseExistingChunk: true
           },
           common: {
             name: 'chunk-common',

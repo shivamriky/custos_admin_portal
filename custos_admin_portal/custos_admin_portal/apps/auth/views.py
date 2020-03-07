@@ -53,8 +53,3 @@ def create_account(request):
         'form': form
     })
 
-
-def request_new_tenant(request):
-    print("request new tenant is called")
-
-    return render(request, 'custos_admin_portal_auth/request_new_tenant.html')

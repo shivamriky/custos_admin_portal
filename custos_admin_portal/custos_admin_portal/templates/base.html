@@ -185,11 +185,7 @@
 
   {% render_bundle 'chunk-vendors' 'js' 'COMMON' %}
   {% render_bundle 'app' 'js' 'COMMON' %}
-  {% render_bundle 'request-new-tenant' 'js' 'COMMON' %}
 
-  {% if user.is_authenticated %}
-    {% render_bundle 'notices' 'js' 'COMMON' %}
-  {% endif %}
   {% block scripts %}
   {% endblock %}
 </body>

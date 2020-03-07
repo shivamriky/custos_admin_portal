@@ -1,6 +1,6 @@
-import { entry } from "../";
+import { entry } from "../../index";
 import RequestNewTenantContainer from "./RequestNewTenantContainer";
-import MainLayout from "../components/MainLayout";
+import MainLayout from "../../components/MainLayout";
 
 // Expect a template with id "edit-experiment" and experiment-id data attribute
 //

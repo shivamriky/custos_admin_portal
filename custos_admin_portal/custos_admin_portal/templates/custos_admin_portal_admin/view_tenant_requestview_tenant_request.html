@@ -1,0 +1,9 @@
+{% extends './base.html' %}
+{% load render_bundle from webpack_loader %}
+
+{% block content %}
+
+<div id="{{bundle_name}}" data-tenant-request-id = "{{tenant_request_id}}"></div>
+
+
+{% endblock content %}

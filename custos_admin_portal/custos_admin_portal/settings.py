@@ -37,7 +37,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'webpack_loader',
 
-    'custos_admin_portal.apps.auth.apps.AuthConfig'
+    'custos_admin_portal.apps.auth.apps.AuthConfig',
+    'custos_admin_portal.apps.workspace',
+    'custos_admin_portal.apps.admin.apps.AdminConfig'
 ]
 
 MIDDLEWARE = [

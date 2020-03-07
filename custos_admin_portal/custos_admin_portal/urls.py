@@ -19,7 +19,10 @@ from django.urls import path, include
 from . import views
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('djadmin/', admin.site.urls),
+    path('admin/', include('custos_admin_portal.apps.admin.urls')),
     path('auth/', include('custos_admin_portal.apps.auth.urls')),
-    path('', views.home, name='home')
+    path('workspace/', include('custos_admin_portal.apps.workspace.urls')),
+    path('', views.home, name='home'),
+
 ]

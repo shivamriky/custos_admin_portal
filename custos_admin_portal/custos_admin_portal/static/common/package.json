@@ -1,8 +1,8 @@
 {
-  "name": "django-airavata-common-ui",
-  "description": "Common UI code for the Airavata Django Portal",
+  "name": "custos-admin-portal-ui",
+  "description": "Front-end code for Custos admin portal",
   "version": "1.0.0",
-  "author": "Marcus Christie <machristie@apache.org>",
+  "author": "Shivam Rastogi",
   "private": true,
   "main": "./js/index.js",
   "module": "./js/index.js",

@@ -1,0 +1,18 @@
+{% extends '../base.html' %}
+
+{% load static %}
+{% load render_bundle from webpack_loader %}
+
+{% block css %}
+{% render_bundle 'chunk-vendors' 'css' 'COMMON' %}
+{% render_bundle bundle_name 'css' 'COMMON' %}
+{% endblock %}
+
+{% block content %}
+<div id="{{ bundle_name }}"></div>
+{% endblock content %}
+
+{% block scripts %}
+{% render_bundle 'chunk-vendors' 'js' 'COMMON' %}
+{% render_bundle bundle_name 'js' 'COMMON' %}
+{% endblock %}
