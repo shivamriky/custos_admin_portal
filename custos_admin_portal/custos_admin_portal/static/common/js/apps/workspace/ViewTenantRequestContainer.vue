@@ -35,6 +35,35 @@
                                 <th scope="row">Admin Name</th>
                                 <td>{{request.admin_first_name}} {{ " " }} {{request.admin_last_name}}</td>
                             </tr>
+                            <tr>
+                                <th scope="row">Primary contact</th>
+                                <td>{{request.primary_contact}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Secondary contact</th>
+                                <td>{{request.secondary_contact}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Redirect URI Name</th>
+                                <td>{{request.redirect_uris}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Scope</th>
+                                <td>{{request.scope}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Domain</th>
+                                <td>{{request.domain}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Client URI</th>
+                                <td>{{request.client_uri}}</td>
+                            </tr>
+                            <tr>
+                                <th scope="row">Comment</th>
+                                <td>{{request.comment}}</td>
+                            </tr>
+
 
                             </tbody>
                         </table>

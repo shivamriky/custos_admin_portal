@@ -2,7 +2,7 @@
     <div>
         <div class="row">
             <div class="col">
-                <h1 class="h4 mb-4">New Tenant Request Form</h1>
+                <h1 class="h4 mb-4">Update Tenant Request Form</h1>
             </div>
         </div>
         <div>
@@ -272,13 +272,10 @@
                 </b-form-group>
 
 
-                <b-button   v-b-modal.modal-1 type="submit" variant="primary">Submit</b-button>
-                <div>
-                    <b-modal id="modal-1" title="Client Id and Secret">
-                        <p class="my-4">Client Id: custos-cs8jycc8cu66jnc2tsu3-10000002</p>
-                        <p class="my-4">Secret: sYh5JIunQQ3aNsG53vC1ZZKrCT8MJmRKzbRmwfla</p>
-                    </b-modal>
-                </div>
+                <b-button type="submit" variant="primary">Update</b-button>
+                <b-button type="submit" variant="">Discard</b-button>
+
+
 
             </b-form>
         </div>
@@ -287,6 +284,7 @@
 
 <script>
     import {email, required, url, minLength} from "vuelidate/lib/validators";
+    import urls from "./utils/urls";
 
     export default {
         computed: {
@@ -303,22 +301,23 @@
         data() {
             return {
                 form: {
-                    client_name: "",
-                    requester_email: "",
-                    admin_username: "",
-                    admin_first_name: "",
-                    admin_last_name: "",
-                    admin_email: "",
+                    request_id: "234234324",
+                    client_name: "Test Client",
+                    requester_email: "tmp@gmail.com",
+                    admin_username: "airavata_admin",
+                    admin_first_name: "Shivam",
+                    admin_last_name: "Rastogi",
+                    admin_email: "shivam@airavata.com",
                     admin_password: "",
-                    primary_contact: "",
-                    secondary_contact: "",
-                    redirect_uris: [""],
-                    scope: [],
-                    domain: "",
-                    client_uri: "",
-                    logo_uri: "",
+                    primary_contact: "51651",
+                    secondary_contact: "5545",
+                    redirect_uris: ["http://tst.com"],
+                    scope: ["openid"],
+                    domain: "google.com",
+                    client_uri: "http://tst.com",
+                    logo_uri: "http://tst.com",
                     application_type: "web",
-                    comment: ""
+                    comment: "Testing the page"
                 },
                 scopeOptions: [
                     {text: "openId", value: "openid"},

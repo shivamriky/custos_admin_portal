@@ -9,7 +9,20 @@ export default {
   },
   navigateToAdminViewRequest(tenantRequest) {
     window.location.assign(
-      this.viewTenantRequest(tenantRequest)
+      this.viewAdminTenantRequest(tenantRequest)
     );
-  }
+  },
+  adminEditTenantRequest(tenantRequest) {
+    return (
+      "/admin/edit-tenant-request/" +
+      encodeURIComponent(tenantRequest.request_id) +
+      "/"
+    );
+  },
+  navigateToAdminEditRequest(tenantRequest) {
+    window.location.assign(
+      this.adminEditTenantRequest(tenantRequest)
+    );
+  },
+
 };

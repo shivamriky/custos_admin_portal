@@ -1,6 +1,6 @@
 import { entry } from "../../index";
-import ViewTenantRequestContainer from "./ViewTenantRequestContainer";
 import MainLayout from "../../components/MainLayout";
+import EditTenantRequest from "./EditTenantRequest";
 
 // Expect a template with id "edit-experiment" and experiment-id data attribute
 //
@@ -10,7 +10,7 @@ entry(Vue => {
   new Vue({
     render(h) {
       return h(MainLayout, [
-        h(ViewTenantRequestContainer, {
+        h(EditTenantRequest, {
           props: {
             tenantRequestId: this.tenantRequestId
           }
@@ -24,8 +24,7 @@ entry(Vue => {
     },
     beforeMount() {
       this.tenantRequestId = JSON.parse(this.$el.dataset.tenantRequestId);
-      console.log("Entry is executed");
-      console.log(this.$el.dataset)
+      console.log("Entry for admin edit tenant request is executed")
     }
-  }).$mount("#admin-view-request");
+  }).$mount("#admin-edit-request");
 });

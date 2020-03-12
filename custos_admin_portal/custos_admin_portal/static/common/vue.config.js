@@ -9,7 +9,9 @@ module.exports = {
     'request-new-tenant': "./js/apps/workspace/entry-request-new-tenant",
     'list-requests': "./js/apps/workspace/entry-list-new-tenant-requests",
     'view-request': "./js/apps/workspace/entry-view-tenant-request",
-    'admin-view-request': "./js/apps/custos_admin_portal_admin/entry-view-tenant-request"
+    'admin-view-request': "./js/apps/custos_admin_portal_admin/entry-admin-view-tenant-request",
+    'admin-edit-request': "./js/apps/custos_admin_portal_admin/entry-admin-edit-tenant-request",
+    'admin-list-requests': "./js/apps/custos_admin_portal_admin/entry-admin-list-new-tenant-requests"
   },
   css: {
     loaderOptions: {
