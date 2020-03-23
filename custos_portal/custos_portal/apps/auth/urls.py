@@ -3,7 +3,7 @@ from django.urls import path
 
 from . import views
 
-app_name = 'custos_admin_portal_auth'
+app_name = 'custos_portal_auth'
 urlpatterns = [
     path('login/', views.start_login, name='login'),
     url(r'^redirect_login/(\w+)/$', views.redirect_login, name='redirect_login'),

@@ -5,7 +5,7 @@ import re
 from django.apps import apps
 from django.conf import settings
 
-from custos_admin_portal.app_config import CustosAppConfig
+from custos_portal.app_config import CustosAppConfig
 
 logger = logging.getLogger(__name__)
 

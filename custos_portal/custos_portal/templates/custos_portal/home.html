@@ -7,8 +7,8 @@
 <div class="jumbotron">
         <h1>Welcome!</h1>
         <p>This is the Django based web portal for Custos Admin.</p>
-        <p><a class="btn btn-primary btn-lg" href="{% url 'custos_admin_portal_auth:login' %}" role="button">Login »</a></p>
-        <p><a class="btn btn-primary btn-lg" href="{% url 'custos_admin_portal_auth:create_account' %}" role="button">Register</a></p>
+        <p><a class="btn btn-primary btn-lg" href="{% url 'custos_portal_auth:login' %}" role="button">Login »</a></p>
+        <p><a class="btn btn-primary btn-lg" href="{% url 'custos_portal_auth:create_account' %}" role="button">Register</a></p>
 
 </div>
 {% if user.is_authenticated %}

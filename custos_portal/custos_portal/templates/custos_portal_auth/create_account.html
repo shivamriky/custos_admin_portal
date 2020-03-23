@@ -12,8 +12,8 @@
         <div class="card-body">
           <h5 class="card-title">Log in with your existing organizational login</h5>
           {% for external in options.external %}
-          <a {% if next %} href="{% url 'custos_admin_portal_auth:redirect_login' external.idp_alias %}?next={{ next | urlencode }}"
-            {% else %} href="{% url 'custos_admin_portal_auth:redirect_login' external.idp_alias %}" {% endif %} class="btn btn-primary btn-block mt-3">
+          <a {% if next %} href="{% url 'custos_portal_auth:redirect_login' external.idp_alias %}?next={{ next | urlencode }}"
+            {% else %} href="{% url 'custos_portal_auth:redirect_login' external.idp_alias %}" {% endif %} class="btn btn-primary btn-block mt-3">
             Sign in with {{ external.name }}
           </a>
           {% endfor %}
@@ -34,7 +34,7 @@
           <h5 class="card-title">Create a {{ options.password.name }} account</h5>
           {% endif %}
           {% include "./partials/messages.html" %}
-          {% url 'custos_admin_portal_auth:create_account' as form_url %}
+          {% url 'custos_portal_auth:create_account' as form_url %}
           {% include "./partials/form.html" with form=form url=form_url submit_text="Create" %}
         </div>
       </div>

@@ -6,9 +6,9 @@
                 {% for external in options.external %}
                 <a
                 {% if next %}
-                    href="{% url 'custos_admin_portal_auth:redirect_login' external.idp_alias %}?next={{ next | urlencode }}"
+                    href="{% url 'custos_portal_auth:redirect_login' external.idp_alias %}?next={{ next | urlencode }}"
                 {% else %}
-                    href="{% url 'custos_admin_portal_auth:redirect_login' external.idp_alias %}"
+                    href="{% url 'custos_portal_auth:redirect_login' external.idp_alias %}"
                 {% endif %}
                     class="btn btn-primary btn-block mt-3">
                         Sign in with {{ external.name }}

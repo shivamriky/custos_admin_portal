@@ -1,8 +1,8 @@
-from custos_admin_portal.app_config import CustosAppConfig
+from custos_portal.app_config import CustosAppConfig
 
 
 class WorkspaceConfig(CustosAppConfig):
-    name = 'custos_admin_portal.apps.workspace'
+    name = 'custos_portal.apps.workspace'
     label = 'custos_admin_portal_workspace'
     verbose_name = 'Workspace'
     app_order = 0

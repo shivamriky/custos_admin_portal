@@ -6,7 +6,7 @@ from . import forms
 
 
 def start_login(request):
-    return render(request, 'custos_admin_portal_auth/login.html', {
+    return render(request, 'custos_portal_auth/login.html', {
         'next': request.GET.get('next', None),
         'options': settings.AUTHENTICATION_OPTIONS,
     })
@@ -48,7 +48,7 @@ def create_account(request):
                 form.add_error(None, ValidationError(e.message))
     else:
         form = forms.CreateAccountForm()
-    return render(request, 'custos_admin_portal_auth/create_account.html', {
+    return render(request, 'custos_portal_auth/create_account.html', {
         'options': settings.AUTHENTICATION_OPTIONS,
         'form': form
     })

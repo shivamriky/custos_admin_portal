@@ -1,4 +1,4 @@
-"""custos_admin_portal URL Configuration
+"""custos_portal URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/3.0/topics/http/urls/
@@ -20,9 +20,9 @@ from . import views
 
 urlpatterns = [
     path('djadmin/', admin.site.urls),
-    path('admin/', include('custos_admin_portal.apps.admin.urls')),
-    path('auth/', include('custos_admin_portal.apps.auth.urls')),
-    path('workspace/', include('custos_admin_portal.apps.workspace.urls')),
+    path('admin/', include('custos_portal.apps.admin.urls')),
+    path('auth/', include('custos_portal.apps.auth.urls')),
+    path('workspace/', include('custos_portal.apps.workspace.urls')),
     path('', views.home, name='home'),
 
 ]
