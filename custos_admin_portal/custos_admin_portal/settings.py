@@ -38,7 +38,7 @@ INSTALLED_APPS = [
     'webpack_loader',
 
     'custos_admin_portal.apps.auth.apps.AuthConfig',
-    'custos_admin_portal.apps.workspace',
+    'custos_admin_portal.apps.workspace.apps.WorkspaceConfig',
     'custos_admin_portal.apps.admin.apps.AdminConfig'
 ]
 
@@ -65,6 +65,7 @@ TEMPLATES = [
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
                 'django.contrib.messages.context_processors.messages',
+                'custos_admin_portal.context_processors.airavata_app_registry',
             ],
         },
     },

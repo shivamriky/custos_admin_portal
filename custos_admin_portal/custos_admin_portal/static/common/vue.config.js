@@ -39,6 +39,7 @@ module.exports = {
        * See also: https://bitbucket.org/calidae/dejavu/src/d63d10b0030a951c3cafa6b574dad25b3bef3fe9/%7B%7Bcookiecutter.project_slug%7D%7D/frontend/vue.config.js?at=master&fileviewer=file-view-default#vue.config.js-27
        */
       splitChunks: {
+        chunks: 'all',
         cacheGroups: {
           vendors: {
             name: 'chunk-vendors',

@@ -149,6 +149,69 @@
     {% endblock %}
     <div class=c-header__title><a href="/">{% block title %}Custos Portal{% endblock %}</a>
     </div>
+    {% if not user.is_authenticated %}
+    <div class=c-header__controls>
+      <div class="btn-group">
+        <div class=dropdown>
+          <a href=# class="dropdown-toggle text-dark" id=appDropdownMenuButton data-toggle=dropdown aria-haspopup=true
+            aria-expanded=false>
+            {% if current_airavata_app %}
+            <i class="fa {{ current_airavata_app.fa_icon_class }} mr-2"></i>
+            {{ current_airavata_app.verbose_name }}
+            {% elif current_custom_app %}
+            <i class="fa {{ current_custom_app.fa_icon_class }} mr-2"></i>
+            {{ current_custom_app.verbose_name }}
+            {% else %}
+            Menu
+            {% endif %}
+          </a>
+          <div class=dropdown-menu aria-labelledby=appDropdownMenuButton>
+            {% for app in airavata_apps %}
+            {% if app == current_airavata_app %}
+            <a class="dropdown-item active" href="{% url app.url_home %}">
+              <i class="fa {{ app.fa_icon_class }} mr-2"></i>{{ app.verbose_name }}
+            </a>
+            {% else %}
+            <a class="dropdown-item" href="{% url app.url_home %}">
+              <i class="fa {{ app.fa_icon_class }} mr-2"></i>{{ app.verbose_name }}
+            </a>
+            {% endif %}
+            {% endfor %}
+            {% if custom_apps|length > 0 %}
+              <div class="dropdown-divider"></div>
+              {% for app in custom_apps %}
+                {% if current_custom_app and app.label == current_custom_app.label %}
+                <a class="dropdown-item active" href="{% url app.url_home %}">
+                  <i class="fa {{ app.fa_icon_class }} mr-2"></i>{{ app.verbose_name }}
+                </a>
+                {% else %}
+                <a class="dropdown-item" href="{% url app.url_home %}">
+                  <i class="fa {{ app.fa_icon_class }} mr-2"></i>{{ app.verbose_name }}
+                </a>
+                {% endif %}
+              {% endfor %}
+            {% endif %}
+          </div>
+        </div>
+      </div>
+      <div class="btn-group ml-3">
+        <div class=dropdown>
+          <a href=# class="dropdown-toggle text-dark" id=dropdownMenuButton data-toggle=dropdown aria-haspopup=true
+            aria-expanded=false>
+            <i class="fa fa-user mr-2"></i>
+            {{ request.session.USERINFO.given_name }}
+            {{ request.session.USERINFO.family_name }}
+          </a>
+          <div class=dropdown-menu aria-labelledby=dropdownMenuButton>
+            <a class=dropdown-item href=#>User settings</a>
+            <a class=dropdown-item href="#">
+              Logout <i class="fa fa-sign-out-alt"></i>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+    {% endif %}
   </header>
 
   <div class=stage>
@@ -163,11 +226,6 @@
     <nav class=c-nav>
       {% block nav-items %}
         {% for nav_item in airavata_app_nav %}
-          <a href="{% url nav_item.url %}" class="c-nav__item {% if nav_item.active %}is-active{% endif %}" data-toggle=tooltip data-placement=right title="{{ nav_item.label }}">
-              <i class="{{ nav_item.icon }}"></i> <span class=sr-only>{{ nav_item.label }}</span>
-          </a>
-        {% endfor %}
-        {% for nav_item in custom_app_nav %}
           <a href="{% url nav_item.url %}" class="c-nav__item {% if nav_item.active %}is-active{% endif %}" data-toggle=tooltip data-placement=right title="{{ nav_item.label }}">
               <i class="{{ nav_item.icon }}"></i> <span class=sr-only>{{ nav_item.label }}</span>
           </a>

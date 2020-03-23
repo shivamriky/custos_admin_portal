@@ -2,7 +2,8 @@ from django.shortcuts import render
 
 
 def list_new_tenant_requests(request):
-    print("New tenant requests list is called")
+    request.active_nav_item = 'list-requests'
+
     # TODO fetch all the tenant requests from airavata here.
     return render(request, 'workspace/list_requests.html', {
         'bundle_name': 'admin-list-requests',
