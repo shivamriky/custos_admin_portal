@@ -1,0 +1,5 @@
+from clients.identity_management_client import IdentityManagementClient
+from clients.user_management_client import UserManagementClient
+
+user_management_client = UserManagementClient()
+identity_management_client = IdentityManagementClient()

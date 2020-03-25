@@ -2,6 +2,8 @@ import copy
 import logging
 import re
 
+from clients.identity_management_client import IdentityManagementClient
+from clients.user_management_client import UserManagementClient
 from django.apps import apps
 from django.conf import settings
 
@@ -10,11 +12,19 @@ from custos_portal.app_config import CustosAppConfig
 logger = logging.getLogger(__name__)
 
 
+# load APIServerClient with default configuration
+client = UserManagementClient()
+id_client = IdentityManagementClient()
+
+token = "Y3VzdG9zLTZud29xb2RzdHBlNW12Y3EwOWxoLTEwMDAwMTAxOkdpS3JHR1ZMVzd6RG9QWnd6Z0NpRk03V1V6M1BoSXVtVG1GeEFrcjc=";
+
+def register_user():
+
+    response = client.register_user(token, "TestingUser", "Jhon", "Smith", "12345", "jhon@iu.edu", True)
+    print(response)
+
 def airavata_app_registry(request):
     """Put airavata django apps into the context."""
-    print([app for app in apps.app_configs])
-    print([app for app in apps.get_app_configs()])
-
     airavata_apps = [app for app in apps.get_app_configs()
                      if isinstance(app, CustosAppConfig)]
     print("Custos apps", airavata_apps)

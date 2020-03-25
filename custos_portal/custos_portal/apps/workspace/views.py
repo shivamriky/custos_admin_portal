@@ -11,7 +11,8 @@ def request_new_tenant(request):
 
 def list_new_tenant_requests(request):
     request.active_nav_item = 'list-requests'
-
+    if request.user:
+        print("hell")
     return render(request, 'workspace/list_requests.html', {
         'bundle_name': 'list-requests',
     })

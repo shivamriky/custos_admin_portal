@@ -1,33 +1,109 @@
+import json
 import logging
+import time
+from pprint import pprint
 
+from django.conf import settings
+from django.contrib.auth.backends import ModelBackend
 from django.contrib.auth.models import User
 from django.views.decorators.debug import sensitive_variables
+from google.auth import jwt
+from google.protobuf.json_format import MessageToJson, MessageToDict
+
+from custos_portal import identity_management_client
 
 logger = logging.getLogger(__name__)
 
 
-class CustosAuthBackend(object):
+class CustosAuthBackend(ModelBackend):
     """Django authentication backend for custos admin portal"""
 
     @sensitive_variables('password')
     def authenticate(self, request=None, username=None, password=None, refresh_token=None):
-        if username and password:
-            return
-
-        return None
+        try:
+            if username and password:
+                token = self._get_token_and_userinfo_password_flow(
+                    username, password)
+                userinfo = self._get_userinfo_from_token(token)
+                self._process_token(request, token)
+                return self._process_userinfo(request, userinfo)
+            # user is already logged in and can use refresh token
+            else:
+                token = self._get_token_and_userinfo_redirect_flow(request)
+                userinfo = self._get_userinfo_from_token(token)
+                self._process_token(request, token)
+                return self._process_userinfo(request, userinfo)
+        except Exception as e:
+            logger.exception("login failed")
+            return None
 
     def get_user(self, user_id):
         try:
-            User.objects.get(pk=user_id)
+            logger.debug("Checking for user: {}".format(user_id))
+            return User.objects.get(pk=user_id)
         except User.DoesNotExist:
             return None
 
+    def _get_token_and_userinfo_password_flow(self, username, password):
+        token = identity_management_client.authenticate(settings.CUSTOS_TOKEN, username, password)
+        print(type(token))
+        logger.info(token["access_token"])
+
+        # TODO: Add user info
+        # userinfo = None
+        return token, userinfo
+
+    def _get_token_and_userinfo_redirect_flow(self, request):
+
+        code = request.GET.get('code')
+        state = request.GET.get('state')
+        session_state = request.GET.get('session_state')
+
+        saved_state = request.session['OAUTH2_STATE']
+        redirect_uri = request.session['OAUTH2_REDIRECT_URI']
+        logger.debug("Code: {}, State: {}, Saved_state: {}, session_state: {}".format(code, state, saved_state,
+                                                                                      session_state))
+
+        if state == saved_state:
+            response = identity_management_client.token(settings.CUSTOS_TOKEN, redirect_uri, code)
+            token = MessageToDict(response)
+
+            logger.debug(token["access_token"])
+            return token
+
+        return
+
+    def _process_token(self, request, token):
+        # TODO validate the JWS signature
+        logger.debug("token: {}".format(token))
+        now = time.time()
+        # Put access_token into session to be used for authenticating with API
+        # server
+        sess = request.session
+        sess['ACCESS_TOKEN'] = token['access_token']
+        sess['ACCESS_TOKEN_EXPIRES_AT'] = now + token['expires_in']
+        sess['REFRESH_TOKEN'] = token['refresh_token']
+        sess['REFRESH_TOKEN_EXPIRES_AT'] = now + token['refresh_expires_in']
+
+    def _get_userinfo_from_token(self, token):
+        userinfo = {}
+
+        decoded_id_token = jwt.decode(token["id_token"], verify=False)
+
+        userinfo["username"] = decoded_id_token["preferred_username"]
+        userinfo["first_name"] = decoded_id_token["given_name"]
+        userinfo["last_name"] = decoded_id_token["family_name"]
+        userinfo["email"] = decoded_id_token["email"]
+        return userinfo
+
     def _process_userinfo(self, request, userinfo):
-        logger.debug("userinfo: {}".format(userinfo))
+        logger.debug("Userinfo: {}".format(userinfo))
+
         username = userinfo['username']
         email = userinfo['email']
         first_name = userinfo['first_name']
         last_name = userinfo['last_name']
+
         request.session['USERINFO'] = userinfo
 
         try:
@@ -36,6 +112,7 @@ class CustosAuthBackend(object):
             user.email = email
             user.first_name = first_name
             user.last_name = last_name
+            logger.debug("User already exists, updating it now")
             # Save the user locally in Django database
             user.save()
         except User.DoesNotExist:
@@ -43,5 +120,6 @@ class CustosAuthBackend(object):
                         first_name=first_name,
                         last_name=last_name,
                         email=email)
+            logger.debug("User does not already exists, adding it now")
             user.save()
         return user

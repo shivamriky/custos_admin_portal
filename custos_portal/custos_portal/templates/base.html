@@ -149,7 +149,8 @@
     {% endblock %}
     <div class=c-header__title><a href="/">{% block title %}Custos Portal{% endblock %}</a>
     </div>
-    {% if not user.is_authenticated %}
+
+    {% if user.is_authenticated %}
     <div class=c-header__controls>
       <div class="btn-group">
         <div class=dropdown>
@@ -199,8 +200,8 @@
           <a href=# class="dropdown-toggle text-dark" id=dropdownMenuButton data-toggle=dropdown aria-haspopup=true
             aria-expanded=false>
             <i class="fa fa-user mr-2"></i>
-            {{ request.session.USERINFO.given_name }}
-            {{ request.session.USERINFO.family_name }}
+            {{ request.session.USERINFO.first_name }}
+            {{ request.session.USERINFO.last_name }}
           </a>
           <div class=dropdown-menu aria-labelledby=dropdownMenuButton>
             <a class=dropdown-item href=#>User settings</a>

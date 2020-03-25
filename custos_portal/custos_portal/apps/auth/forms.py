@@ -1,9 +1,13 @@
 import logging
 
+from clients.user_management_client import UserManagementClient
+from custos.core import IamAdminService_pb2
 from django import forms
+from django.conf import settings
 from django.core import validators
 
 logger = logging.getLogger(__name__)
+user_management_client = UserManagementClient()
 
 USERNAME_VALIDATOR = validators.RegexValidator(
     regex=r"^[a-z0-9_-]+$",
@@ -188,6 +192,7 @@ class CreateAccountForm(forms.Form):
 
     def clean(self):
         cleaned_data = super().clean()
+        print(cleaned_data)
         password = cleaned_data.get('password')
         password_again = cleaned_data.get('password_again')
 
@@ -212,20 +217,24 @@ class CreateAccountForm(forms.Form):
             )
 
         username = cleaned_data.get('username')
-        # Check here if username is available.
+
+        check_username = user_management_client.is_username_available(settings.CUSTOS_TOKEN, username)
+        print(check_username.is_exist)
         try:
-            if username:
+            if user_management_client.is_username_available(settings.CUSTOS_TOKEN, username).is_exist:
+                logger.info("Username is available");
+            else:
+                logger.info("Username is not available");
                 self.add_error(
                     'username',
                     forms.ValidationError("That username is not available")
                 )
         except Exception as e:
-            logger.exception("Failed to check if username is available")
             self.add_error(
                 'username',
-                forms.ValidationError("Error occurred while checking if "
-                                      "username is available: " + str(e)))
-
+                forms.ValidationError("Error occurred while checking the username.")
+            )
+            logger.info("Username is not available")
         return cleaned_data
 
 

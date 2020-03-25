@@ -7,5 +7,10 @@ app_name = 'custos_portal_auth'
 urlpatterns = [
     path('login/', views.start_login, name='login'),
     url(r'^redirect_login/(\w+)/$', views.redirect_login, name='redirect_login'),
-    url(r'^create-account$', views.create_account, name='create_account')
+    url(r'^create-account$', views.create_account, name='create_account'),
+    url(r'^redirect_login/(\w+)/$', views.redirect_login, name='redirect_login'),
+    url(r'^callback/$', views.callback, name='callback'),
+    url(r'^callback-error/(?P<idp_alias>\w+)/$', views.callback_error,
+        name='callback-error'),
+
 ]
