@@ -53,6 +53,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    'custos_portal.apps.auth.middleware.gateway_groups_middleware',
 ]
 
 ROOT_URLCONF = 'custos_portal.urls'

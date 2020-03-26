@@ -6,10 +6,10 @@ from clients.identity_management_client import IdentityManagementClient
 from clients.user_management_client import UserManagementClient
 from django.conf import settings
 from django.contrib import messages
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.core.exceptions import ValidationError
 from django.forms import formset_factory
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, resolve_url
 from django.urls import reverse
 from requests_oauthlib import OAuth2Session
 
@@ -66,10 +66,8 @@ def callback(request):
     try:
         user = authenticate(request=request)
         logger.debug("Saving user to session: {}".format(user))
-
         login(request, user)
-
-        return redirect(reverse('custos_portal_workspace:list_requests'))
+        return _handle_login_redirect(request)
     except Exception as err:
         logger.exception("An error occurred while processing OAuth2 "
                          "callback: {}".format(request.build_absolute_uri()))
@@ -94,6 +92,45 @@ def callback_error(request, idp_alias):
     })
 
 
+def handle_login(request):
+    username = request.POST['username']
+    password = request.POST['password']
+    login_type = request.POST.get('login_type', None)
+    template = "custos_portal_auth/login.html"
+    if login_type and login_type == 'password':
+        template = "custos_portal_auth/login_username_password.html"
+    user = authenticate(username=username, password=password, request=request)
+    logger.debug("authenticated user: {}".format(user))
+    try:
+        if user is not None:
+            login(request, user)
+            return _handle_login_redirect(request)
+        else:
+            messages.error(request, "Login failed. Please try again.")
+    except Exception as err:
+        messages.error(request,
+                       "Login failed: {}. Please try again.".format(str(err)))
+    return render(request, template, {
+        'username': username,
+        'next': request.POST.get('next', None),
+        'options': settings.AUTHENTICATION_OPTIONS,
+        'login_type': login_type,
+    })
+
+
+def _handle_login_redirect(request):
+    if request.is_gateway_admin:
+        return redirect(reverse('custos_portal_admin:list_requests'))
+    else:
+        return redirect(reverse('custos_portal_workspace:list_requests'))
+
+
+def start_logout(request):
+    logout(request)
+    redirect_url = request.build_absolute_uri(resolve_url(settings.LOGOUT_REDIRECT_URL))
+    return redirect(settings.KEYCLOAK_LOGOUT_URL + "?redirect_uri=" + quote(redirect_url))
+
+
 def create_account(request):
     print("Create account is called")
     if request.method == 'POST':
@@ -107,7 +144,7 @@ def create_account(request):
                 password = form.cleaned_data['password']
                 is_temp_password = True
                 result = user_management_client.register_user(settings.CUSTOS_TOKEN,
-                                                              username, email, first_name, last_name, password,
+                                                              username, first_name, last_name, password, email,
                                                               is_temp_password)
                 if result.is_registered:
                     messages.success(

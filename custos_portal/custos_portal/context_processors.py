@@ -18,15 +18,24 @@ id_client = IdentityManagementClient()
 
 token = "Y3VzdG9zLTZud29xb2RzdHBlNW12Y3EwOWxoLTEwMDAwMTAxOkdpS3JHR1ZMVzd6RG9QWnd6Z0NpRk03V1V6M1BoSXVtVG1GeEFrcjc=";
 
+
 def register_user():
 
     response = client.register_user(token, "TestingUser", "Jhon", "Smith", "12345", "jhon@iu.edu", True)
     print(response)
 
+
 def airavata_app_registry(request):
     """Put airavata django apps into the context."""
     airavata_apps = [app for app in apps.get_app_configs()
-                     if isinstance(app, CustosAppConfig)]
+                     if isinstance(app, CustosAppConfig) and
+                     (app.app_enabled(request)
+                      )]
+    for app in apps.get_app_configs():
+        if isinstance(app, CustosAppConfig):
+            print(app.url_app_name)
+            print(getattr(app, 'enabled', None))
+            print(app.app_enabled(request))
     print("Custos apps", airavata_apps)
     # Sort by app_order then by verbose_name (case-insensitive)
     airavata_apps.sort(
@@ -66,7 +75,10 @@ def _get_current_app(request, apps):
 
 def _get_app_nav(request, current_app):
     if hasattr(current_app, 'nav'):
-        nav = copy.copy(current_app.nav)
+        # Copy and filter current_app's nav items
+        nav = [item
+               for item in copy.copy(current_app.nav)
+               if 'enabled' not in item or item['enabled'](request)]
         # convert "/djangoapp/path/in/app" to "path/in/app"
         app_path = "/".join(request.path.split("/")[2:])
         print(app_path)

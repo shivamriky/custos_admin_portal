@@ -16,12 +16,15 @@ class WorkspaceConfig(CustosAppConfig):
             'label': 'Create new tenant request',
             'icon': 'fa fa-plus-square',
             'url': 'custos_portal_workspace:request_new_tenant',
-            'active_prefixes': ['applications', 'request-new-tenant']
+            'active_prefixes': ['applications', 'request-new-tenant'],
         },
         {
             'label': 'List of all existing tenant requests',
             'icon': 'fa fa-list',
             'url': 'custos_portal_workspace:list_requests',
-            'active_prefixes': ['applications', 'list-requests']
+            'active_prefixes': ['applications', 'list-requests'],
         }
     ]
+
+    def app_enabled(self, request):
+        return True

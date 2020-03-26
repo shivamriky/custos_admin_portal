@@ -16,6 +16,14 @@ class AdminConfig(CustosAppConfig):
             'label': 'Application Catalog',
             'icon': 'fa fa-list',
             'url': 'custos_portal_admin:list_requests',
-            'active_prefixes': ['applications', 'list-requests']
+            'active_prefixes': ['applications', 'list-requests'],
+            'enabled': lambda req: (req.is_gateway_admin or
+                                    req.is_read_only_gateway_admin),
         }
     ]
+
+    def app_enabled(self, request):
+        if hasattr(request, "is_gateway_admin") and request.is_gateway_admin:
+            return True
+        else:
+            return False

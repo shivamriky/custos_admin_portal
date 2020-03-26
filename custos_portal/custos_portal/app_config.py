@@ -40,6 +40,9 @@ class CustosAppConfig(AppConfig, ABC):
         """Some user friendly text to briefly describe the application."""
         pass
 
+    @abstractmethod
+    def app_enabled(self, request):
+        pass
 
 def enhance_custom_app_config(app):
     """As necessary add default values for properties to custom AppConfigs."""
@@ -99,3 +102,4 @@ def get_app_description(app_config):
 
 def get_app_urls(app_config):
     return import_module(".urls", app_config.name)
+

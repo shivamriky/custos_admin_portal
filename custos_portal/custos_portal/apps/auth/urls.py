@@ -12,5 +12,7 @@ urlpatterns = [
     url(r'^callback/$', views.callback, name='callback'),
     url(r'^callback-error/(?P<idp_alias>\w+)/$', views.callback_error,
         name='callback-error'),
+    url(r'handle-login', views.handle_login, name="handle_login"),
+    url(r'^logout$', views.start_logout, name='logout'),
 
 ]
