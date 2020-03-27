@@ -23,3 +23,22 @@ KEYCLOAK_VERIFY_SSL = False
 
 
 SESSION_COOKIE_SECURE = False
+
+# Default email backend (for local development)
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+# Django - Email settings
+# Uncomment and specify the following for sending emails (default email backend
+# just prints to the console)
+# EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+# EMAIL_HOST = '...'
+# EMAIL_PORT = '...'
+# EMAIL_HOST_USER = '...'
+# EMAIL_HOST_PASSWORD = '...'
+# EMAIL_USE_TLS = True
+ADMINS = [('Admin Name', 'admin@example.com')]
+# SERVER_EMAIL = 'portal@example.com'
+
+
+# Portal settings
+PORTAL_TITLE = 'Custos Admin Portal'

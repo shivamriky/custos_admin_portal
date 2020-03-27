@@ -14,5 +14,7 @@ urlpatterns = [
         name='callback-error'),
     url(r'handle-login', views.handle_login, name="handle_login"),
     url(r'^logout$', views.start_logout, name='logout'),
+    url(r'^verify-email/(?P<code>[\w-]+)/$', views.verify_email,
+        name="verify_email"),
 
 ]

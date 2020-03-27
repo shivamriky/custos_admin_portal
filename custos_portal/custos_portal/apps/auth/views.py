@@ -8,11 +8,15 @@ from django.conf import settings
 from django.contrib import messages
 from django.contrib.auth import authenticate, login, logout
 from django.core.exceptions import ValidationError
-from django.forms import formset_factory
+from django.forms import formset_factory, models
 from django.shortcuts import render, redirect, resolve_url
+from django.template import Context
 from django.urls import reverse
+from django.utils.http import urlencode
 from requests_oauthlib import OAuth2Session
 
+from . import utils
+from . import models
 from . import forms
 from ... import identity_management_client
 from ... import user_management_client
@@ -132,7 +136,6 @@ def start_logout(request):
 
 
 def create_account(request):
-    print("Create account is called")
     if request.method == 'POST':
         form = forms.CreateAccountForm(request.POST)
         if form.is_valid():
@@ -143,10 +146,11 @@ def create_account(request):
                 last_name = form.cleaned_data['last_name']
                 password = form.cleaned_data['password']
                 is_temp_password = True
-                result = user_management_client.register_user(settings.CUSTOS_TOKEN,
-                                                              username, first_name, last_name, password, email,
-                                                              is_temp_password)
+                result = user_management_client.register_user(settings.CUSTOS_TOKEN, username, first_name, last_name,
+                                                              password, email, is_temp_password)
                 if result.is_registered:
+                    logger.debug("User account successfully created for : {}".format(username))
+                    _create_and_send_email_verification_link(request, username, email, first_name, last_name, next)
                     messages.success(
                         request,
                         "Account request processed successfully. Before you "
@@ -154,8 +158,7 @@ def create_account(request):
                         "We've sent you an email with a link that you should "
                         "click on to complete the account creation process.")
                 else:
-                    form.add_error(None, ValidationError(
-                        "Failed to register the user with IAM service"))
+                    form.add_error(None, ValidationError("Failed to register the user with IAM service"))
             except TypeError as e:
                 logger.exception(
                     "Failed to create account for user", exc_info=e)
@@ -170,3 +173,80 @@ def create_account(request):
         'options': settings.AUTHENTICATION_OPTIONS,
         'form': form
     })
+
+
+def verify_email(request, code):
+
+    try:
+        email_verification = models.EmailVerification.objects.get(verification_code=code)
+        email_verification.verified = True
+        email_verification.save()
+        # Check if user is enabled, if so redirect to login page
+        username = email_verification.username
+        logger.debug("Email address verified for {}".format(username))
+        login_url = reverse('custos_portal_auth:login')
+        if email_verification.next:
+            login_url += "?" + urlencode({'next': email_verification.next})
+        if iam_admin_client.is_user_enabled(username):
+            logger.debug("User {} is already enabled".format(username))
+            messages.success(
+                request,
+                "Your account has already been successfully created. "
+                "Please log in now.")
+            return redirect(login_url)
+        else:
+            logger.debug("Enabling user {}".format(username))
+            # enable user and inform admins
+            iam_admin_client.enable_user(username)
+            user_profile = iam_admin_client.get_user(username)
+            email_address = user_profile.emails[0]
+            first_name = user_profile.firstName
+            last_name = user_profile.lastName
+            utils.send_new_user_email(request,
+                                      username,
+                                      email_address,
+                                      first_name,
+                                      last_name)
+            messages.success(
+                request,
+                "Your account has been successfully created. "
+                "Please log in now.")
+            return redirect(login_url)
+    except ObjectDoesNotExist as e:
+        # if doesn't exist, give user a form where they can enter their
+        # username to resend verification code
+        logger.exception("EmailVerification object doesn't exist for "
+                         "code {}".format(code))
+        messages.error(
+            request,
+            "Email verification failed. Please enter your username and we "
+            "will send you another email verification link.")
+        return redirect(reverse('django_airavata_auth:resend_email_link'))
+    except Exception as e:
+        logger.exception("Email verification processing failed!")
+        messages.error(
+            request,
+            "Email verification failed. Please try clicking the email "
+            "verification link again later.")
+        return redirect(reverse('django_airavata_auth:create_account'))
+
+
+def _create_and_send_email_verification_link(request, username, email, first_name, last_name, next_url):
+
+    email_verification = models.EmailVerification(username=username, next=next_url)
+    email_verification.save()
+
+    verification_uri = request.build_absolute_uri(
+        reverse('custos_portal_auth:verify_email', kwargs={'code': email_verification.verification_code}))
+    logger.debug(
+        "verification_uri={}".format(verification_uri))
+
+    context = Context({
+        "username": username,
+        "email": email,
+        "first_name": first_name,
+        "last_name": last_name,
+        "portal_title": settings.PORTAL_TITLE,
+        "url": verification_uri,
+    })
+    utils.send_email_to_user(models.VERIFY_EMAIL_TEMPLATE, context)
