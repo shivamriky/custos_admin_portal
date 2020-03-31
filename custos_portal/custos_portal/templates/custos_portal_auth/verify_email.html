@@ -10,7 +10,7 @@
         <div class="card-body">
           <h5 class="card-title">Resend Email Verification Link</h5>
           {% include "./partials/messages.html" %}
-          {% url 'django_airavata_auth:resend_email_link' code as form_url %}
+          {% url 'custos_portal_auth:resend_email_link' code as form_url %}
           {% include "./partials/form.html" with form=form url=form_url submit_text="Resend" %}
         </div>
       </div>

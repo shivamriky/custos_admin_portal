@@ -31,12 +31,6 @@ def airavata_app_registry(request):
                      if isinstance(app, CustosAppConfig) and
                      (app.app_enabled(request)
                       )]
-    for app in apps.get_app_configs():
-        if isinstance(app, CustosAppConfig):
-            print(app.url_app_name)
-            print(getattr(app, 'enabled', None))
-            print(app.app_enabled(request))
-    print("Custos apps", airavata_apps)
     # Sort by app_order then by verbose_name (case-insensitive)
     airavata_apps.sort(
         key=lambda app: "{:09}-{}".format(app.app_order,

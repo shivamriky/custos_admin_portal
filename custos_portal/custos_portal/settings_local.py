@@ -18,9 +18,8 @@ KEYCLOAK_AUTHORIZE_URL = 'https://keycloak.custos.scigap.org:31000/auth/realms/1
 KEYCLOAK_TOKEN_URL = 'https://airavata.host:8443/auth/realms/default/protocol/openid-connect/token'
 KEYCLOAK_LOGOUT_URL = 'https://keycloak.custos.scigap.org:31000/auth/realms/10000101/protocol/openid-connect/logout'
 # Optional: specify if using self-signed certificate or certificate from unrecognized CA
-#KEYCLOAK_CA_CERTFILE = os.path.join(BASE_DIR, "django_airavata", "resources", "incommon_rsa_server_ca.pem")
+# KEYCLOAK_CA_CERTFILE = os.path.join(BASE_DIR, "django_airavata", "resources", "incommon_rsa_server_ca.pem")
 KEYCLOAK_VERIFY_SSL = False
-
 
 SESSION_COOKIE_SECURE = False
 
@@ -42,3 +41,4 @@ ADMINS = [('Admin Name', 'admin@example.com')]
 
 # Portal settings
 PORTAL_TITLE = 'Custos Admin Portal'
+GATEWAY_ID = 'Custos Portal'

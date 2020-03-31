@@ -126,7 +126,7 @@ STATIC_URL = '/static/'
 STATICFILES_DIRS = [os.path.join(BASE_DIR, "custos_portal", "static")]
 
 LOGIN_URL = 'custos_portal_auth:login'
-LOGIN_REDIRECT_URL = 'django_airavata_workspace:dashboard'
+LOGIN_REDIRECT_URL = 'custos_portal_auth:dashboard'
 LOGOUT_REDIRECT_URL = '/'
 
 AUTHENTICATION_OPTIONS = {

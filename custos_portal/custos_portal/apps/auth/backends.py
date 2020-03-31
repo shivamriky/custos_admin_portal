@@ -21,7 +21,6 @@ class CustosAuthBackend(ModelBackend):
     @sensitive_variables('password')
     def authenticate(self, request=None, username=None, password=None, refresh_token=None):
         try:
-            userinfo = None
             if username and password:
                 token = self._get_token_and_userinfo_password_flow(username, password)
                 request.session["ACCESS_TOKEN"] = token
