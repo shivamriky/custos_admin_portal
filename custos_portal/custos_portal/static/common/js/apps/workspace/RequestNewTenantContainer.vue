@@ -6,17 +6,18 @@
             </div>
         </div>
         <div>
-            <b-form @submit="onSubmit">
+            <b-form @submit="onSubmit" method="post">
                 <b-form-group
                         id="fieldset-1"
                         description=""
                         label="Client Name"
-                        label-for="input-1"
+                        label-for="client-name"
                         :invalid-feedback="invalidFeedback"
                         :valid-feedback="validFeedback"
                 >
                     <b-form-input
-                            id="input-1"
+                            id="client-name"
+                            name="client-name"
                             v-model="form.client_name"
                             :state="!$v.form.client_name.$invalid"
                             trim>
@@ -26,14 +27,16 @@
                         id="fieldset-1"
                         description=""
                         label="Requester Email"
-                        label-for="input-1"
+                        label-for="requester-email"
                         :invalid-feedback="invalidFeedback"
                         :valid-feedback="validFeedback"
                 >
                     <b-form-input
-                            id="input-1"
+                            id="requester-email"
+                            name="requester-email"
                             v-model="form.requester_email"
                             :state="!$v.form.requester_email.$invalid"
+                            type="email"
                             trim>
                     </b-form-input>
                 </b-form-group>
@@ -42,12 +45,13 @@
                         id="fieldset-1"
                         description=""
                         label="Admin Username"
-                        label-for="input-1"
+                        label-for="admin-username"
                         :invalid-feedback="invalidFeedback"
                         :valid-feedback="validFeedback"
                 >
                     <b-form-input
-                            id="input-1"
+                            id="admin-username"
+                            name="admin-username"
                             v-model="form.admin_username"
                             :state="!$v.form.admin_username.$invalid"
                             trim>
@@ -59,12 +63,13 @@
                                 id="fieldset-1"
                                 description=""
                                 label="Admin First Name"
-                                label-for="input-1"
+                                label-for="admin-first-name"
                                 :invalid-feedback="invalidFeedback"
                                 :valid-feedback="validFeedback"
                         >
                             <b-form-input
-                                    id="input-1"
+                                    id="admin-first-name"
+                                    name="admin-first-name"
                                     v-model="form.admin_first_name"
                                     :state="!$v.form.admin_first_name.$invalid"
                                     trim>
@@ -76,12 +81,13 @@
                                 id="fieldset-1"
                                 description=""
                                 label="Admin Last Name"
-                                label-for="input-1"
+                                label-for="admin-last-name"
                                 :invalid-feedback="invalidFeedback"
                                 :valid-feedback="validFeedback"
                         >
                             <b-form-input
-                                    id="input-1"
+                                    id="admin-last-name"
+                                    name="admin-last-name"
                                     v-model="form.admin_last_name"
                                     :state="!$v.form.admin_last_name.$invalid"
                                     trim>
@@ -94,13 +100,15 @@
                         id="fieldset-1"
                         description=""
                         label="Admin Email"
-                        label-for="input-1"
+                        label-for="admin-email"
                         :invalid-feedback="invalidFeedback"
                         :valid-feedback="validFeedback"
                 >
                     <b-form-input
-                            id="input-1"
+                            id="admin-email"
+                            name="admin-email"
                             v-model="form.admin_email"
+                            type="email"
                             :state="!$v.form.admin_email.$invalid"
                             trim>
                     </b-form-input>
@@ -110,18 +118,19 @@
                         id="fieldset-1"
                         description=""
                         label="Admin Password"
-                        label-for="input-1"
+                        label-for="admin-password"
                         :invalid-feedback="invalidFeedback"
                         :valid-feedback="validFeedback"
                 >
                     <b-input type="password"
-                             id="text-password"
+                             id="admin-password"
+                             name="admin-password"
                              aria-describedby="password-help-block"
                              v-model="form.admin_password"
                              :state="!$v.form.admin_password.$invalid"
                              trim></b-input>
                     <b-form-text id="password-help-block">
-                        Your password must be 8-20 characters long, and must contain letters and numbers, and must
+                        Your password must be at least 8 characters long, and must contain letters and numbers, and must
                         at least one special character.
                     </b-form-text>
                 </b-form-group>
@@ -133,14 +142,16 @@
                                 id="fieldset-1"
                                 description=""
                                 label="Primary contact"
-                                label-for="input-1"
+                                label-for="primary-contact"
                                 :invalid-feedback="invalidFeedback"
                                 :valid-feedback="validFeedback"
                         >
                             <b-form-input
-                                    id="input-1"
+                                    id="primary-contact"
+                                    name="primary-contact"
                                     v-model="form.primary_contact"
                                     :state="!$v.form.primary_contact.$invalid"
+                                    type="tel"
                                     trim>
                             </b-form-input>
                         </b-form-group>
@@ -150,12 +161,13 @@
                                 id="fieldset-1"
                                 description=""
                                 label="Secondary Contact"
-                                label-for="input-1"
+                                label-for="secondary-contact"
                                 :invalid-feedback="invalidFeedback"
                                 :valid-feedback="validFeedback"
                         >
                             <b-form-input
-                                    id="input-1"
+                                    id="secondary-contact"
+                                    name="secondary-contact"
                                     v-model="form.secondary_contact"
                                     :state="!$v.form.secondary_contact.$invalid"
                                     trim>
@@ -170,15 +182,17 @@
                                     id="fieldset-1"
                                     description=""
                                     label="Redirect URI"
-                                    label-for="input-1"
+                                    label-for="redirect-uri"
                                     :invalid-feedback="invalidFeedback"
                                     :valid-feedback="validFeedback"
                             >
                                 <b-input-group>
                                     <b-form-input
-                                            id="input-1"
+                                            id="redirect-uri"
+                                            name='redirect-uri'
                                             v-model="form.redirect_uris[index]"
                                             :state="!$v.form.redirect_uris.$each[index].$invalid"
+                                            type="url"
                                             trim>
                                     </b-form-input>
                                     <b-input-group-append>
@@ -193,24 +207,25 @@
                 </div>
                 <b-form-group label="Scope:">
                     <b-form-checkbox-group
-                            id="checkbox-group-1"
+                            id="scope"
                             v-model="form.scope"
                             :options="scopeOptions"
-                            name="flavour-1"
+                            name="scope"
                     ></b-form-checkbox-group>
                 </b-form-group>
                 <b-form-group
                         id="fieldset-1"
                         description=""
                         label="Domain"
-                        label-for="input-1"
+                        label-for="domain"
                         :invalid-feedback="invalidFeedback"
                         :valid-feedback="validFeedback"
                 >
                     <b-form-input
-                            id="input-1"
+                            id="domain"
                             v-model="form.domain"
                             :state="!$v.form.domain.$invalid"
+                            placeholder="idp.htrc.indiana.edu"
                             trim>
                     </b-form-input>
                 </b-form-group>
@@ -218,12 +233,12 @@
                         id="fieldset-1"
                         description=""
                         label="Client URI"
-                        label-for="input-1"
+                        label-for="client-uri"
                         :invalid-feedback="invalidFeedback"
                         :valid-feedback="validFeedback"
                 >
                     <b-form-input
-                            id="input-1"
+                            id="client-uri"
                             v-model="form.client_uri"
                             :state="!$v.form.client_uri.$invalid"
                             trim>
@@ -233,14 +248,15 @@
                         id="fieldset-1"
                         description=""
                         label="Logo URI"
-                        label-for="input-1"
+                        label-for="logo-uri"
                         :invalid-feedback="invalidFeedback"
                         :valid-feedback="validFeedback"
                 >
                     <b-form-input
-                            id="input-1"
+                            id="logo-uri"
                             v-model="form.logo_uri"
                             :state="!$v.form.logo_uri.$invalid"
+                            type="url"
                             trim>
                     </b-form-input>
                 </b-form-group>
@@ -249,14 +265,14 @@
                         id="fieldset-1"
                         description="(At least 15 characters long) Provide description of the new tenant and any other comments here."
                         label="Comment"
-                        label-for="input-1"
+                        label-for="comment"
                         :invalid-feedback="invalidFeedback"
                         :valid-feedback="validFeedback"
                 >
                     <b-form-textarea
+                            id="comment"
                             rows="3"
                             textarea
-                            id="input-1"
                             v-model="form.comment"
                             :state="!$v.form.comment.$invalid"
                             trim>
@@ -264,21 +280,13 @@
                 </b-form-group>
                 <b-form-group label="Application Type">
                     <b-form-radio-group
-                            id="radio-group-1"
+                            id="application-type"
                             v-model="form.application_type"
                             :options="application_typeOptions"
-                            name="radio-options"
+                            name="application-type"
                     ></b-form-radio-group>
                 </b-form-group>
-
-
-                <b-button   v-b-modal.modal-1 type="submit" variant="primary">Submit</b-button>
-                <div>
-                    <b-modal id="modal-1" title="Client Id and Secret">
-                        <p class="my-4">Client Id: custos-cs8jycc8cu66jnc2tsu3-10000002</p>
-                        <p class="my-4">Secret: sYh5JIunQQ3aNsG53vC1ZZKrCT8MJmRKzbRmwfla</p>
-                    </b-modal>
-                </div>
+                <b-button  v-b-modal.modal-1 :disabled="isSubmitDisabled" type="submit" variant="primary">Submit</b-button>
 
             </b-form>
         </div>
@@ -298,6 +306,9 @@
             },
             validFeedback() {
                 return ''
+            },
+            isSubmitDisabled() {
+                return this.$v.form.$invalid;
             }
         },
         data() {
@@ -317,7 +328,7 @@
                     domain: "",
                     client_uri: "",
                     logo_uri: "",
-                    application_type: "web",
+                    application_type: "",
                     comment: ""
                 },
                 scopeOptions: [
@@ -353,7 +364,13 @@
                 primary_contact: {required},
                 secondary_contact: {},
                 scope: {required},
-                domain: {url},
+                domain: {
+                    required,
+                    validDomain(domain) {
+                    return (
+                        /^((?!-))(xn--)?[a-z0-9][a-z0-9-_]{0,61}[a-z0-9]{0,}\.?((xn--)?([a-z0-9\-.]{1,61}|[a-z0-9-]{1,30})\.?[a-z]{2,})$/.test(domain)
+                    )
+                    }},
                 client_uri: {required},
                 logo_uri: {url},
                 application_type: {required},
@@ -367,12 +384,16 @@
         },
         methods: {
             onSubmit(event) {
-                event.preventDefault();
-                console.log(this.$v.form.client_name)
+                if(this.$v.form.invalid){
+                    console.log("Please fix the errors");
+                    event.preventDefault();
+                    event.preventDefault();
+                }
             },
             addRedirectUri: function () {
                 this.form.redirect_uris.push("");
             },
+            // TODO check whether 1 redirect URI is there
             deleteRedirectUri: function (index) {
                 console.log(index);
                 this.form.redirect_uris.splice(index, 1);
